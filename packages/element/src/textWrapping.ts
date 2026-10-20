@@ -156,6 +156,9 @@ const getLineBreakRegexAdvanced = () =>
     // Rules for whitespace and hyphen
     Break.Before(COMMON.WHITESPACE).Build(),
     Break.After(COMMON.WHITESPACE, COMMON.HYPHEN).Build(),
+    // URLs and file paths break after `/` (B1 in UAX #14), but not when
+    // the `/` is followed by CJK, which pairs with the following chars instead
+    Break.After(/\//u).NotFollowedBy(CJK.CHAR).Build(),
     // Rules for CJK (chars, symbols, currency)
     Break.Before(CJK.CHAR, CJK.CURRENCY)
       .NotPrecededBy(COMMON.OPENING, CJK.OPENING)
