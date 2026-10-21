@@ -1,0 +1,22 @@
+# Platform baseline secret scan. Extends gitleaks defaults; only whitelists
+# template files and obvious placeholder values so real committed secrets
+# still fail the gate.
+title = "SDLC platform gitleaks baseline"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ignore example/template files, vendored/build dirs, placeholders"
+paths = [
+  '''(^|/)\.env\.example$''',
+  '''(^|/)\.env\.sample$''',
+  '''(^|/)\.gitleaks\.toml$''',
+  '''(^|/)node_modules/''',
+  '''(^|/)(dist|build|out|coverage|\.next|\.nuxt|\.output|\.svelte-kit)/''',
+  '''(^|/)(\.venv|venv|vendor|\.direnv|\.devenv|\.git)/''',
+  '''(^|/)(\.sdlc|\.opencode|\.claude|\.omp|\.swe|pages)/''',
+]
+regexes = [
+  '''(?i)(change[-_ ]?me|changeme|placeholder|example|dummy|xxxxx+|your[-_][a-z]+[-_](here|key|secret|token))''',
+]
