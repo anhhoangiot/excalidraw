@@ -27,3 +27,15 @@ dev-dist
 html
 meta*.json
 .claude
+
+.sdlc/output/
+.opencode/
+.claude/
+opencode.json
+CLAUDE.md
+.devenv/
+.direnv/
+devenv.local.nix
+.playwright-mcp/
+test-results/
+playwright-report/
