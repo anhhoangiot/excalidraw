@@ -1,4 +1,7 @@
 import {
+  bytesToHexString,
+  castArray,
+  escapeDoubleQuotes,
   getNearestScrollableContainer,
   isInputLike,
   isInteractive,
@@ -6,6 +9,7 @@ import {
   isTransparent,
   isWritableElement,
   mapFind,
+  nFormatter,
   reduceToCommonValue,
 } from "@excalidraw/common";
 import { vi } from "vitest";
@@ -116,6 +120,39 @@ describe("@excalidraw/common/utils", () => {
     it("should return undefined if no mapped element is found", () => {
       expect(mapFind([1, 2], () => undefined)).toBe(undefined);
       expect(mapFind([1, 2], () => null)).toBe(undefined);
+    });
+  });
+
+  describe("nFormatter()", () => {
+    it("formats numbers with SI-like suffixes", () => {
+      expect(nFormatter(1000, 1)).toBe("1k");
+      expect(nFormatter(1234, 1)).toBe("1.2k");
+      expect(nFormatter(1500000, 2)).toBe("1.5M");
+      expect(nFormatter(2000000000, 1)).toBe("2G");
+    });
+  });
+
+  describe("escapeDoubleQuotes()", () => {
+    it("escapes double quotes only", () => {
+      expect(escapeDoubleQuotes('say "hi" & more')).toBe(
+        "say &quot;hi&quot; & more",
+      );
+      expect(escapeDoubleQuotes("no quotes")).toBe("no quotes");
+    });
+  });
+
+  describe("castArray()", () => {
+    it("wraps non-arrays and returns arrays unchanged", () => {
+      expect(castArray(1)).toEqual([1]);
+      const arr = [1, 2];
+      expect(castArray(arr)).toBe(arr);
+    });
+  });
+
+  describe("bytesToHexString()", () => {
+    it("encodes bytes as zero-padded lowercase hex", () => {
+      expect(bytesToHexString(new Uint8Array([0, 15, 255]))).toBe("000fff");
+      expect(bytesToHexString(new Uint8Array([]))).toBe("");
     });
   });
 
